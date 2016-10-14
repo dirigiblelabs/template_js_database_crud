@@ -177,13 +177,13 @@ exports.update = function(entity) {
     }
 };
 
-// Delete an entity by Id
-exports.delete = function(id) {
+// Delete an entity
+exports.delete = function(entity) {
     var connection = datasource.getConnection();
     try {
     	var sql = 'DELETE FROM ${tableName} WHERE #foreach ($tableColumn in $tableColumns)#if ($tableColumn.isKey())${tableColumn.getName()}#end#end = ?';
         var statement = connection.prepareStatement(sql);
-        statement.setString(1, id);
+        statement.setString(1, entity.#foreach ($tableColumn in $tableColumns)#if ($tableColumn.isKey())${tableColumn.getName().toLowerCase()}#end#end);
         statement.executeUpdate();
     } finally {
         connection.close();
