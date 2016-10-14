@@ -99,8 +99,9 @@ function handlePutRequest(httpRequest, httpResponse) {
 function handleDeleteRequest(httpRequest, httpResponse, xss) {
 	var id = getIdParameter(httpRequest, xss);
 	if (id !== null) {
-		if (${fileNameNoExtension}Dao.get(id) !== null) {
-			${fileNameNoExtension}Dao.delete(id);
+		var entity = ${fileNameNoExtension}Dao.get(id);
+		if (entity !== null) {
+			${fileNameNoExtension}Dao.delete(entity);
 			sendResponse(httpResponse, httpResponse.NO_CONTENT);
 		} else {
 			sendResponse(httpResponse, httpResponse.NOT_FOUND, 'text/plain', 'No entity found with \'#foreach ($tableColumn in $tableColumns)#if ($tableColumn.isKey())${tableColumn.getName().toLowerCase()}#end#end\'=' + id);
